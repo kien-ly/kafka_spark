@@ -24,3 +24,7 @@ bin/kafka-topics.sh --create --topic CleanSensorData --bootstrap-server localhos
 https://www.youtube.com/watch?v=b5BRj_BBXoc
 
 https://www.apache.org/dyn/closer.cgi?path=/kafka/3.2.0/kafka_2.13-3.2.0.tgz
+
+
+
+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
