@@ -2,8 +2,9 @@ import time
 import json
 import requests
 import datetime
-from kafka import KafkaProducer, KafkaClient
-from websocket import create_connection
+# from kafka import KafkaProducer, KafkaClient
+from kafka import KafkaProducer
+# from websocket import create_connection
 
 
 def get_sensor_data_stream():
@@ -20,7 +21,7 @@ producer = KafkaProducer(bootstrap_servers=['localhost:9092'])
 while True:
     msg =  get_sensor_data_stream()
     producer.send("RawSensorData", msg.encode('utf-8'))
-    time.sleep(1)
+    time.sleep(10)
 
 
     

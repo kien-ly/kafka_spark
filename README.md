@@ -87,6 +87,8 @@
 -   #### Start Zookeeper
     
 
+		 bin/zookeeper-server-start.sh config/zookeeper.properties
+
 		 bash /opt/zookeeper-3.4.14/bin/zkServer.sh start
     
 
@@ -104,6 +106,8 @@
     
 
 		   ./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic RawSensorData
+
+		   bin/kafka-topics.sh --create --topic RawSensorData --bootstrap-server 127.0.0.1:9092 
     
 
   
@@ -112,6 +116,10 @@
     
 
 		 ./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic CleanSensorData
+
+		 bin/kafka-topics.sh --create --topic CleanSensorData --bootstrap-server 127.0.0.1:9092
+
+		 
     
 
   
@@ -128,6 +136,8 @@
     
 
 		  ./bin/spark-submit structure_validate_store.py
+
+		  spark-submit structure_validate_store.py
     
 
   

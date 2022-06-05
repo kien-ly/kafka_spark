@@ -5,10 +5,10 @@ from pyspark import SparkContext
 from kafka import KafkaConsumer, KafkaProducer
 
 #Mongo DB
-from pymongo import MongoClient
-client = MongoClient('localhost', 27017)
-db = client['RealTimeDB']
-collection = db['RealTimeCollection']
+# from pymongo import MongoClient
+# client = MongoClient('localhost', 27017)
+# db = client['RealTimeDB']
+# collection = db['RealTimeCollection']
 
 
 
@@ -95,17 +95,17 @@ def structure_validate_data(msg):
 sc=SparkContext.getOrCreate()
 sc.setLogLevel("WARN")
 
-consumer = KafkaConsumer('RawSensorData', auto_offset_reset='earliest',bootstrap_servers=['localhost:9092'], consumer_timeout_ms=1000)
+consumer = KafkaConsumer('RawSensorData', auto_offset_reset='earliest',bootstrap_servers=['127.0.0.1:9092'], consumer_timeout_ms=1000)
 
-producer = KafkaProducer(bootstrap_servers=['localhost:9092'])
+producer = KafkaProducer(bootstrap_servers=['127.0.0.1:9092'])
 
-for msg in consumer:
-    if msg.value.decode("utf-8")!="Error in Connection":
-        data=structure_validate_data(msg)
+# for msg in consumer:
+#     if msg.value.decode("utf-8")!="Error in Connection":
+#         data=structure_validate_data(msg)
         
-        if timestamp_exist(data['TimeStamp'])==False:            
-            #push data to mongo db
-            collection.insert(data)
-            producer.send("CleanSensorData", json.dumps(data, default=json_util.default).encode('utf-8'))
+#         if timestamp_exist(data['TimeStamp'])==False:            
+#             #push data to mongo db
+#             collection.insert(data)
+#             producer.send("CleanSensorData", json.dumps(data, default=json_util.default).encode('utf-8'))
         
-        print(data)
+#         print(data)
