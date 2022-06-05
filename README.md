@@ -23,7 +23,7 @@ In the future
 -   ### Kafka Producer (Topic: RawSensorData)
     
 	
-	-   The data from the API stream is pushed to Kafka Producer under topic: RawSensorData
+	-   The data from the API stream is pushed to Kafka Producer under topic: RawSensorData (In fact, using Random function to create data :D )
 	    
 
   
@@ -33,7 +33,7 @@ In the future
 -   ### Apache Spark and Kafka Consumer (Topic: CleanSensorData)
     
 
-	-   The data under the topic RawSensorData is streamed through Kafka Consumer. (In fact, using Random function to create data :D ) The data is then structured and validated using Spark.
+	-   The data under the topic RawSensorData is streamed through Kafka Consumer. The data is then structured and validated using Spark.
 	    
 
 	  
@@ -43,7 +43,7 @@ In the future
 
   
 
-		![](https://lh6.googleusercontent.com/DBMkx3tX90NCtokgNYT4BkjJGujCyeZk08X4w99vo2zfsBN9Yz1YGtb38Tcc3F6_HtMbML9NLVcHPFW310MDSSLWg8G8KoTuo-sC00aApDdNW9ql1ny605pwV6r5DS-Y5D325elU)
+		![](https://lh6.googleusercontent.pipline1com/DBMkx3tX90NCtokgNYT4BkjJGujCyeZk08X4w99vo2zfsBN9Yz1YGtb38Tcc3F6_HtMbML9NLVcHPFW310MDSSLWg8G8KoTuo-sC00aApDdNW9ql1ny605pwV6r5DS-Y5D325elU)
 
 -   ### MongoDB
     
