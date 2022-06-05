@@ -2,15 +2,21 @@ import json
 from bson import json_util
 from dateutil import parser
 from pyspark import SparkContext
+import kafka
 from kafka import KafkaConsumer, KafkaProducer
+# from kafka import  KafkaProducer
+# import findspark
+# findspark.init('/opt/spark')
+# from pyspark.streaming.kafka import KafkaUtils
+# from actors import pyProducer
+
+
 
 #Mongo DB
-# from pymongo import MongoClient
-# client = MongoClient('localhost', 27017)
-# db = client['RealTimeDB']
-# collection = db['RealTimeCollection']
-
-
+from pymongo import MongoClient
+client = MongoClient('localhost', 27017)
+db = client['RealTimeDB']
+collection = db['RealTimeCollection']
 
 def timestamp_exist(TimeStamp):
     if collection.find({'TimeStamp': {"$eq": TimeStamp}}).count() > 0:
@@ -18,8 +24,7 @@ def timestamp_exist(TimeStamp):
     else:
         return False
     
-def structure_validate_data(msg):
-    
+def structure_validate_data(msg):    
     
     data_dict={}
     
@@ -95,17 +100,27 @@ def structure_validate_data(msg):
 sc=SparkContext.getOrCreate()
 sc.setLogLevel("WARN")
 
-consumer = KafkaConsumer('RawSensorData', auto_offset_reset='earliest',bootstrap_servers=['127.0.0.1:9092'], consumer_timeout_ms=1000)
-
+# spark = SparkSession \
+#         .builder \
+#         .appName("Python Spark SQL basic example") \
+#         .getOrCreate()
+# spark.conf.set("spark.sql.execution.arrow.enabled", "true")
+# sc = spark.sparkContext
+# sc.setLogLevel("WARN")
+# # ssc = StreamingContext(sc, 60)
 producer = KafkaProducer(bootstrap_servers=['127.0.0.1:9092'])
 
-# for msg in consumer:
-#     if msg.value.decode("utf-8")!="Error in Connection":
-#         data=structure_validate_data(msg)
+consumer = KafkaConsumer('RawSensorData', auto_offset_reset='earliest',bootstrap_servers=['127.0.0.1:9092'], consumer_timeout_ms=10000)
+
+
+for msg in consumer:
+    if msg.value.decode("utf-8")!="Error in Connection":
+        data=structure_validate_data(msg)
         
-#         if timestamp_exist(data['TimeStamp'])==False:            
-#             #push data to mongo db
-#             collection.insert(data)
-#             producer.send("CleanSensorData", json.dumps(data, default=json_util.default).encode('utf-8'))
+        if timestamp_exist(data['TimeStamp'])==False:            
+            ##push data to mongo db
+            # collection.insert(data)
+            #push data to kafka
+            producer.send("CleanSensorData", json.dumps(data, default=json_util.default).encode('utf-8'))
         
-#         print(data)
+        print(data)

@@ -1,10 +1,11 @@
 # Real-Time Data Pipeline Using Kafka and Spark
 
+source: [here](https://github.com/Pahulpreet86/Real-Time-Data-Pipeline-Using-Kafka-and-Spark)
 ## Data Pipeline Architecture
 
   
 
-![](https://lh4.googleusercontent.com/eZykZAZj43p1oYAZFf_X3CINjHx6qz1rRevNptNWWisXYmDYDEae7Fhla7ETWZ2TmGRvTECBlMtFBe6aKHWaVUac7imu_hOXgVLZwFebuvE-_O_FmSZgdb5kBJAFMAxBl3AAgsYD)
+![](img/pipline1.png)
 
 -   ### API
    
@@ -89,7 +90,6 @@
 
 		 bin/zookeeper-server-start.sh config/zookeeper.properties
 
-		 bash /opt/zookeeper-3.4.14/bin/zkServer.sh start
     
 
   
@@ -105,18 +105,13 @@
 -   #### Create RawSensorData Topic
     
 
-		   ./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic RawSensorData
-
 		   bin/kafka-topics.sh --create --topic RawSensorData --bootstrap-server 127.0.0.1:9092 
     
 
   
 
 -   #### Create CleanSensorData Topic
-    
-
-		 ./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic CleanSensorData
-
+    		 
 		 bin/kafka-topics.sh --create --topic CleanSensorData --bootstrap-server 127.0.0.1:9092
 
 		 
@@ -135,8 +130,8 @@
 -   #### Structure and Validate Data, Push To MongoDB and Kafka Topic CleanSensorData
     
 
-		  ./bin/spark-submit structure_validate_store.py
-
+		  spark-submit --packages org.apache.spark:spark-streaming-kafka-0-10_2.13:3.2.1 structure_validate_store.py
+or: 
 		  spark-submit structure_validate_store.py
     
 
