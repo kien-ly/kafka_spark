@@ -71,7 +71,10 @@ source: [here](https://github.com/Pahulpreet86/Real-Time-Data-Pipeline-Using-Kaf
 
 		![](https://lh5.googleusercontent.com/qtt7B4EC1FCRpqWreTOrk74gAXTDvtJ3TxTKs6KWaAbtB_5MZ5-4-GSJYkbuLGRHMEUK5Gzp4njgEiklshdTs-LbCAhOeI-u96k5g9vf0IU6Av_RQx0CiR1PXY4jbMHkmesMnNhM)
 
-  
+## Create environment
+
+		python3 -m venv venv
+		source venv/bin/activate
 
 ## How to run the code
 
@@ -105,7 +108,10 @@ source: [here](https://github.com/Pahulpreet86/Real-Time-Data-Pipeline-Using-Kaf
 -   #### Create RawSensorData Topic
     
 
+		   bin/kafka-topics.sh --create --topic RawSensorData --bootstrap-server 127.0.0.1:9092 --replication-factor 1 --partitions 1
+or 
 		   bin/kafka-topics.sh --create --topic RawSensorData --bootstrap-server 127.0.0.1:9092 
+
     
 
   
@@ -113,11 +119,13 @@ source: [here](https://github.com/Pahulpreet86/Real-Time-Data-Pipeline-Using-Kaf
 -   #### Create CleanSensorData Topic
     		 
 		 bin/kafka-topics.sh --create --topic CleanSensorData --bootstrap-server 127.0.0.1:9092
+or
+		 bin/kafka-topics.sh --create --topic CleanSensorData --bootstrap-server 127.0.0.1:9092 --replication-factor 1 --partitions 1
 
-		 
     
+- ### check list of topics
 
-  
+		bin/kafka-topics.sh --bootstrap-server 127.0.0.1:9092 --list
 
 -  #### Push Data From API Stream to Kafka Topic: RawSensorData
     
