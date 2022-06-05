@@ -3,7 +3,9 @@
 source: [here](https://github.com/Pahulpreet86/Real-Time-Data-Pipeline-Using-Kafka-and-Spark)
 ## Data Pipeline Architecture
 
-  
+![](img/Pipeline.png)
+
+In the future
 
 ![](img/pipline1.png)
 
@@ -31,7 +33,7 @@ source: [here](https://github.com/Pahulpreet86/Real-Time-Data-Pipeline-Using-Kaf
 -   ### Apache Spark and Kafka Consumer (Topic: CleanSensorData)
     
 
-	-   The data under the topic RawSensorData is streamed through Kafka Consumer. The data is then structured and validated using Spark.
+	-   The data under the topic RawSensorData is streamed through Kafka Consumer. (In fact, using Random function to create data :D ) The data is then structured and validated using Spark.
 	    
 
 	  
@@ -45,6 +47,7 @@ source: [here](https://github.com/Pahulpreet86/Real-Time-Data-Pipeline-Using-Kaf
 
 -   ### MongoDB
     
+	(maybe use Postgres to replace it)
 
 	-   The structured data is pushed to MongoDB collection with the following schema:
 	    
@@ -65,6 +68,7 @@ source: [here](https://github.com/Pahulpreet86/Real-Time-Data-Pipeline-Using-Kaf
 
 -   ### Realtime Dashboard
     
+(Can use Superset to replace it)
 
 	-   The dashboard is implemented in the bokeh visualization library and data is streamed using Kafka Consumer under topic CleanSensorData.
 	    
@@ -73,12 +77,15 @@ source: [here](https://github.com/Pahulpreet86/Real-Time-Data-Pipeline-Using-Kaf
 
 ## Create environment
 
-		python3 -m venv venv
-		source venv/bin/activate
+		python3 -m venv env
+		source env/bin/activate
 
 ## How to run the code
 
   
+Open 8 terminal tab for all process
+
+![](img/tab.png)
 
 -   #### Start the API (port: 3030)
     
