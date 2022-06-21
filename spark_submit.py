@@ -1,33 +1,54 @@
 import json
+import requests
 from bson import json_util
 from dateutil import parser
 from pyspark import SparkContext
 from kafka import KafkaConsumer, KafkaProducer
 import time
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import *
 #Mongo DB
-from pymongo import MongoClient
-client = MongoClient('localhost', 27017)
-db = client['RealTimeDB']
-collection = db['RealTimeCollection']
+# from pymongo import MongoClient
+# client = MongoClient('localhost', 27017)
+# db = client['RealTimeDB']
+# collection = db['RealTimeCollection']
+
+kafka_topic_name = "test-topic"
+kafka_bootstrap_servers = 'localhost:9092'
 
 
+if __name__ == "__main__":
+    print("Stream Data Processing Application Started ...")
+    print(time.strftime("%Y-%m-%d %H:%M:%S"))
 
-def timestamp_exist(TimeStamp):
-    if (collection.find({'TimeStamp': {"$eq": TimeStamp}}).count()) > 0:
-    # if float(collection.find({'TimeStamp': {"$eq": TimeStamp}})) > 0:
-        return True
-    else:
-        return False
+    spark = SparkSession \
+        .builder \
+        .appName("PySpark Structured Streaming with Kafka and Message Format as CSV") \
+        .master("local[*]") \
+        .config('spark.driver.host', '127.0.0.2') \
+        .config('spark.jars.packages', 'org.apache.spark:spark-sql-kafka-0-10_2.12:3.2.0') \
+        .getOrCreate()
+
+        #scala version 2.12 --> spark-sql-kafka-0-10_2.12:3.2.0
+        #Spark version is 3.0.1 so I have :3.0.1
+        
+    # spark.sparkContext.setLogLevel("WARN")
+
+    # sc=spark.sparkContext.getOrCreate()
+    # sc.setLogLevel("WARN")
+    spark.sparkContext.setLogLevel("WARN")
+
+
     
-def structure_validate_data(msg):
-    
+def structure_validate_data(msg):    
     
     data_dict={}
     
     #create RDD
-    rdd=sc.parallelize(msg.value.decode("utf-8").split())
+    rdd=spark.parallelize(msg.value.decode("utf-8").split())
+    # rdd=sc.parallelize(msg.value.decode("utf-8").split())
     
-    data_dict["RawData"]=str(msg.value.decode("utf-8"))
+    data_dict["test-topic"]=str(msg.value.decode("utf-8"))
     
     #data validation and create json data dict
     try:
@@ -63,8 +84,7 @@ def structure_validate_data(msg):
     except Exception as error:
         
         
-        data_dict["Turbidity"]="Error"
-        
+        data_dict["Turbidity"]="Error"      
     
         
     try:
@@ -93,10 +113,9 @@ def structure_validate_data(msg):
     
     return data_dict
 
-sc=SparkContext.getOrCreate()
-sc.setLogLevel("WARN")
 
-consumer = KafkaConsumer('RawSensorData', auto_offset_reset='earliest',bootstrap_servers=['localhost:9092'], consumer_timeout_ms=10000)
+
+consumer = KafkaConsumer('test-topic', auto_offset_reset='earliest',bootstrap_servers=['localhost:9092'], consumer_timeout_ms=10000)
 
 producer = KafkaProducer(bootstrap_servers=['localhost:9092'])
 
@@ -105,9 +124,10 @@ for msg in consumer:
         data=structure_validate_data(msg)
         producer.send("CleanSensorData", json.dumps(data, default=json_util.default).encode('utf-8'))
         time.sleep(10)
-        if timestamp_exist(data['TimeStamp'])==False:            
-            #push data to mongo db
-            collection.insert(data)
-            producer.send("CleanSensorData", json.dumps(data, default=json_util.default).encode('utf-8'))
+        # if timestamp_exist(data['TimeStamp'])==False:            
+        #     #push data to mongo db
+        #     collection.insert(data)
+        #     producer.send("CleanSensorData", json.dumps(data, default=json_util.default).encode('utf-8'))
         
         print(data)
+

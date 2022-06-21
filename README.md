@@ -80,6 +80,8 @@ In the future
 		python3 -m venv env
 		source env/bin/activate
 
+
+
 ## How to run the code
 
   
@@ -172,3 +174,10 @@ or:
     
 
 		bokeh serve --show dashboard.py
+
+
+-  #### fix error 
+
+Can't assign requested address: Service 'sparkDriver' failed after 16 retries" when running spark code [here](https://stackoverflow.com/questions/52133731/how-to-solve-cant-assign-requested-address-service-sparkdriver-failed-after): 
+
+		export SPARK_LOCAL_IP="127.0.0.1"
