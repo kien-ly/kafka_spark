@@ -2,3 +2,8 @@ env
 kafka_2.13-3.2.0
 text.txt
 LICENSE
+data
+test.py
+.ipynb_checkpoints
+csv
+khamkhao

@@ -3,20 +3,13 @@
 source: [here](https://github.com/Pahulpreet86/Real-Time-Data-Pipeline-Using-Kafka-and-Spark)
 ## Data Pipeline Architecture
 
-![](img/Pipeline.png)
 
-In the future
-
-![](img/pipline1.png)
+![](img/pipline3.png)
 
 -   ### API
    
 	-  	 The API mimics the water quality sensor data similar to the one shared [here](https://data.world/cityofchicago/beach-water-quality-automated-sensors).
 	    
-	-   The implementation is done in flask web framework and the response is as follows:
-	    
-
-		‘2020-02-17T11:12:58.765969 26.04 540.1 13.12 Montrose_Beach 758028’
 
 		![](https://lh6.googleusercontent.com/TDsc79yE-D_GBX7hFNrbgGlnP81TaRvBESeE2JvyEb8VaFzO_h1jNezTLsTg8CRsjfMtJOFrxPJi0EkqTOuRXlpP6U0SwuSMtFg4_rYYzNF5iASjx3MFIM4jKe5fjTKlVbAm4OMK)
 
@@ -45,25 +38,6 @@ In the future
 
 		![](https://lh6.googleusercontent.pipline1com/DBMkx3tX90NCtokgNYT4BkjJGujCyeZk08X4w99vo2zfsBN9Yz1YGtb38Tcc3F6_HtMbML9NLVcHPFW310MDSSLWg8G8KoTuo-sC00aApDdNW9ql1ny605pwV6r5DS-Y5D325elU)
 
--   ### MongoDB
-    
-	(maybe use Postgres to replace it)
-
-	-   The structured data is pushed to MongoDB collection with the following schema:
-	    
-		```markdown
-		| Keys             | Data Type |
-		|------------------|-----------|
-		| _id              | Object Id |
-		| Beach            | String    |
-		| MeasurementID    | long      |
-		| BatteryLife      | Double    |
-		| RawData          | String    |
-		| WaterTemperature | Double    |
-		| Turbidity        | Double    |
-		| TimeStamp        | timestamp |
-		```  
-  
   
 
 -   ### Realtime Dashboard
@@ -95,16 +69,12 @@ Open 8 terminal tab for all process
   		 python sensor.py
 	    
 
-  
-
 -   #### Start Zookeeper
     
+	After install kafka, go to it's local
 
 		 bin/zookeeper-server-start.sh config/zookeeper.properties
 
-    
-
-  
 
 -   #### Start Kafka
     
@@ -112,26 +82,6 @@ Open 8 terminal tab for all process
 		bin/kafka-server-start.sh config/server.properties
     
 
-  
-
--   #### Create RawSensorData Topic
-    
-
-		   bin/kafka-topics.sh --create --topic RawSensorData --bootstrap-server 127.0.0.1:9092 --replication-factor 1 --partitions 1
-or 
-		   bin/kafka-topics.sh --create --topic RawSensorData --bootstrap-server 127.0.0.1:9092 
-
-    
-
-  
-
--   #### Create CleanSensorData Topic
-    		 
-		 bin/kafka-topics.sh --create --topic CleanSensorData --bootstrap-server 127.0.0.1:9092
-or
-		 bin/kafka-topics.sh --create --topic CleanSensorData --bootstrap-server 127.0.0.1:9092 --replication-factor 1 --partitions 1
-
-    
 - ### check list of topics
 
 		bin/kafka-topics.sh --bootstrap-server 127.0.0.1:9092 --list
@@ -144,12 +94,10 @@ or
 
   
 
--   #### Structure and Validate Data, Push To MongoDB and Kafka Topic CleanSensorData
+-   #### Structure and Validate Data
     
 
-		  spark-submit --packages org.apache.spark:spark-streaming-kafka-0-10_2.13:3.2.1 structure_validate_store.py
-or: 
-		  spark-submit structure_validate_store.py
+		python spark_submit.py
     
 
   
@@ -176,8 +124,3 @@ or:
 		bokeh serve --show dashboard.py
 
 
--  #### fix error 
-
-Can't assign requested address: Service 'sparkDriver' failed after 16 retries" when running spark code [here](https://stackoverflow.com/questions/52133731/how-to-solve-cant-assign-requested-address-service-sparkdriver-failed-after): 
-
-		export SPARK_LOCAL_IP="127.0.0.1"
