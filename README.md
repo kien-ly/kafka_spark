@@ -2,9 +2,9 @@
 
 source: [here](https://github.com/Pahulpreet86/Real-Time-Data-Pipeline-Using-Kafka-and-Spark)
 ## Data Pipeline Architecture
+In the future
 
-
-![](img/pipline3.png)
+![](img/pipeline3.png)
 
 -   ### API
    
@@ -69,18 +69,26 @@ Open 8 terminal tab for all process
   		 python sensor.py
 	    
 
+  
+
 -   #### Start Zookeeper
     
 	After install kafka, go to it's local
 
 		 bin/zookeeper-server-start.sh config/zookeeper.properties
 
+    
+
+  
 
 -   #### Start Kafka
     
 
 		bin/kafka-server-start.sh config/server.properties
     
+
+  
+
 
 - ### check list of topics
 
